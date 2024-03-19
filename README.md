@@ -132,6 +132,7 @@ chmod +x oc-mirror
 ```
 mv oc-mirror /usr/local/bin/
 ```
+```
 dnf install docker -y
 ```
 ```
