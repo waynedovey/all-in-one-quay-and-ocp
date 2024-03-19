@@ -33,7 +33,7 @@ Get a pull secret https://console.redhat.com/openshift/install/pull-secret
 {
   "auths": {
     "registry.digitaldovey.net:8443": {
-      "auth": "aW5pdDpXOWlLVUxWZDZHT2tKTzJ4M0IrajFGSjYzN21YQjA1VnFpeWg0Z0xURm5hSE0xVmIwajJ0d2xNbk95ZFlJNnp6",
+      "auth": "xxxx",
       "email": ""
     },
     "cloud.openshift.com": {
