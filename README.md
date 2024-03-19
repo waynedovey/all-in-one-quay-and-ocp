@@ -157,6 +157,7 @@ grpcurl -plaintext localhost:50051 api.Registry/ListPackages > redhat-operators-
 ```
 oc-mirror list operators --catalog registry.redhat.io/redhat/redhat-operator-index:v4.13 --package compliance-operator
 ```
+```
 cat <<EOF > imageSetConfig.yaml
 kind: ImageSetConfiguration
 apiVersion: mirror.openshift.io/v1alpha2
