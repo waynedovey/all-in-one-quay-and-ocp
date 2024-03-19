@@ -1,4 +1,4 @@
-###Get the correct clients
+### Get the correct clients ###
 
 
 wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.13.29/oc-mirror.tar.gz
@@ -12,18 +12,18 @@ tar -xvf openshift-client-linux.tar.gz
 mv oc-mirror openshift-install oc kubectl /usr/local/bin/
 chmod -R a+x /usr/local/bin/ 
 
-###SSL Cert Creation
+### SSL Cert Creation ###
 
 openssl req -new -newkey rsa:2048 -nodes -keyout registry.digitaldovey.net.key -out registry.digitaldovey.net.csr
 
 openssl s_client -connect registry.digitaldovey.net:8443 -servername registry.digitaldovey.net -showcerts
 
-###sign and request cert registry.digitaldovey.net.pem
+### sign and request cert registry.digitaldovey.net.pem ###
 
 cp registry.digitaldovey.net.pem /etc/pki/ca-trust/source/anchors
 sudo update-ca-trust extract
 
-###Quay Mirror Guide
+### Quay Mirror Guide ###
 
 hostnamectl hostname registry.digitaldovey.net
 
@@ -82,7 +82,7 @@ imageContentSources:
   - registry.digitaldovey.net:8443/ocp4/openshift4
   source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
 
-### Operator Mirroring Guide
+### Operator Mirroring Guide ###
 
 wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/oc-mirror.tar.gz
 gunzip oc-mirror.tar.gz
