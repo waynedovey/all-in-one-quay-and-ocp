@@ -1,36 +1,62 @@
 ### Get the correct clients ###
 
-
+```
 wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.13.29/oc-mirror.tar.gz
+```
+```
 wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.13.29/openshift-install-linux.tar.gz
+```
+```
 wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.13.29/openshift-client-linux.tar.gz
+```
 
+```
 tar -xvf oc-mirror.tar.gz
+```
+```
 tar -xvf openshift-install-linux.tar.gz
+```
+```
 tar -xvf openshift-client-linux.tar.gz
+```
 
+```
 mv oc-mirror openshift-install oc kubectl /usr/local/bin/
-chmod -R a+x /usr/local/bin/ 
+```
+```
+chmod -R a+x /usr/local/bin/
+```
 
 ### SSL Cert Creation ###
 
+```
 openssl req -new -newkey rsa:2048 -nodes -keyout registry.digitaldovey.net.key -out registry.digitaldovey.net.csr
-
+```
+```
 openssl s_client -connect registry.digitaldovey.net:8443 -servername registry.digitaldovey.net -showcerts
-
+```
 ### sign and request cert registry.digitaldovey.net.pem ###
 
+```
 cp registry.digitaldovey.net.pem /etc/pki/ca-trust/source/anchors
+```
+```
 sudo update-ca-trust extract
+```
 
 ### Quay Mirror Guide ###
 
+```
 hostnamectl hostname registry.digitaldovey.net
+```
 
 Get a pull secret https://console.redhat.com/openshift/install/pull-secret
 
+```
 /root/pull_secret.txt
+```
 
+```
 {
   "auths": {
     "registry.digitaldovey.net:8443": {
@@ -55,13 +81,17 @@ Get a pull secret https://console.redhat.com/openshift/install/pull-secret
     }
   }
 }
-
+```
+```
 wget https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/mirror-registry/latest/mirror-registry.tar.gz
-
+```
+```
 wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux.tar.gz
-
+```
+```
 ./mirror-registry install --quayHostname registry.digitaldovey.net --targetHostname registry.digitaldovey.net  --quayRoot /var/mirror-registry --initPassword changeme --ssh-key /root/.ssh/id_rsa --sslCert /root/registry.digitaldovey.net.pem
-
+```
+```
 export OCP_RELEASE="4.13.29"
 export LOCAL_REGISTRY="registry.digitaldovey.net:8443"
 export LOCAL_REPOSITORY="ocp4/openshift4"
@@ -69,11 +99,13 @@ export PRODUCT_REPO="openshift-release-dev"
 export LOCAL_SECRET_JSON="/root/pull_secret.txt"
 export RELEASE_NAME="ocp-release"
 export ARCHITECTURE="x86_64"  
-
+```
+```
 oc adm release mirror -a ${LOCAL_SECRET_JSON} --from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE} --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE}
+```
 
 --> install-config.yaml
-
+```
 imageContentSources:
 - mirrors:
   - registry.digitaldovey.net:8443/ocp4/openshift4
@@ -81,12 +113,17 @@ imageContentSources:
 - mirrors:
   - registry.digitaldovey.net:8443/ocp4/openshift4
   source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+```
 
 ### Operator Mirroring Guide ###
 
+```
 wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/oc-mirror.tar.gz
+
 gunzip oc-mirror.tar.gz
+
 tar -xvf oc-mirror.tar
+
 chmod +x oc-mirror
 mv oc-mirror /usr/local/bin/
 
@@ -103,7 +140,7 @@ curl -sSL "https://github.com/fullstorydev/grpcurl/releases/download/v1.8.7/grpc
 grpcurl -plaintext localhost:50051 api.Registry/ListPackages > redhat-operators-packages.out
 
 oc-mirror list operators --catalog registry.redhat.io/redhat/redhat-operator-index:v4.13 --package compliance-operator
-
+```
 cat <<EOF > imageSetConfig.yaml
 kind: ImageSetConfiguration
 apiVersion: mirror.openshift.io/v1alpha2
