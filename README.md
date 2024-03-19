@@ -119,26 +119,41 @@ imageContentSources:
 
 ```
 wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/oc-mirror.tar.gz
-
+```
+```
 gunzip oc-mirror.tar.gz
-
+```
+```
 tar -xvf oc-mirror.tar
-
+```
+```
 chmod +x oc-mirror
+```
+```
 mv oc-mirror /usr/local/bin/
-
+```
 dnf install docker -y
-
+```
+```
 mkdir .docker/
+```
+```
 cat ./pull_secret.txt | jq . > pull_secret.json
+```
+```
 cp pull_secret.json .docker/config.json
+```
+```
 sudo docker login registry.redhat.io
-
+```
+```
 sudo docker run -p50051:50051 -it registry.redhat.io/redhat/redhat-operator-index:v4.14
-
+```
+```
 curl -sSL "https://github.com/fullstorydev/grpcurl/releases/download/v1.8.7/grpcurl_1.8.7_linux_x86_64.tar.gz" | sudo tar -xz -C /usr/local/bin
 grpcurl -plaintext localhost:50051 api.Registry/ListPackages > redhat-operators-packages.out
-
+```
+```
 oc-mirror list operators --catalog registry.redhat.io/redhat/redhat-operator-index:v4.13 --package compliance-operator
 ```
 cat <<EOF > imageSetConfig.yaml
@@ -157,18 +172,23 @@ mirror:
           - name: stable
         - name: file-integrity-operator
 EOF
-
-
+```
+```
 oc mirror --config=/root/imageSetConfig.yaml file:///var/mirror-registry/operators/
-
+```
+```
 cd /var/mirror-registry/operators/
-
+```
+```
 docker login -u init -p changeme registry.digitaldovey.net:8443 
-
+```
+```
 oc-mirror --from=/var/mirror-registry/operators/ docker://registry.digitaldovey.net:8443/ocp/operators
-
+```
+```
 cd /var/mirror-registry/operators/oc-mirror-workspace/results-1710538892
-
+```
+```
 cat <<EOF > catalogSource-redhat-operator-index.yaml
 apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
@@ -179,7 +199,8 @@ spec:
   image: registry.digitaldovey.net:8443/ocp/operators/redhat/redhat-operator-index:v4.13
   sourceType: grpc
 EOF
-
+```
+```
 cat <<EOF > imageContentSourcePolicy.yaml
 ---
 apiVersion: operator.openshift.io/v1alpha1
@@ -197,8 +218,12 @@ spec:
     - registry.digitaldovey.net:8443/ocp/operators/compliance
     source: registry.redhat.io/compliance
 EOF
-
+```
+```
 oc patch operatorhubs/cluster --type merge --patch \
  '{"spec":{"sources":[{"disabled": true,"name": "community-operators"},{"disabled": true,"name": "certified-operators"},{"disabled": true,"name": "redhat-marketplace"},{"disabled": true,"name": "redhat-operators"}]}}'
-
+```
+```
 oc apply -f /var/mirror-registry/operators/oc-mirror-workspace/results-1710538892
+```
+```
