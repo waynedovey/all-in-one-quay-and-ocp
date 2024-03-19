@@ -226,4 +226,3 @@ oc patch operatorhubs/cluster --type merge --patch \
 ```
 oc apply -f /var/mirror-registry/operators/oc-mirror-workspace/results-1710538892
 ```
-```
