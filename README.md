@@ -173,6 +173,9 @@ mirror:
           channels:
           - name: stable
         - name: file-integrity-operator
+        - name: advanced-cluster-management
+          channels:
+          - name: release-2.10
 EOF
 ```
 ```
