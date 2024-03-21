@@ -229,5 +229,5 @@ oc patch operatorhubs/cluster --type merge --patch \
  '{"spec":{"sources":[{"disabled": true,"name": "community-operators"},{"disabled": true,"name": "certified-operators"},{"disabled": true,"name": "redhat-marketplace"},{"disabled": true,"name": "redhat-operators"}]}}'
 ```
 ```
-oc apply -f /var/mirror-registry/operators/oc-mirror-workspace/results-1710538892
+oc apply -f /var/mirror-registry/operators/oc-mirror-workspace/results-1710973244
 ```
